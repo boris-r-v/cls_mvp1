@@ -37,12 +37,8 @@ file(GLOB sources "cls_core/*.h" "cls_core/*.cpp" "cls_core/*.hpp" "main.cpp" "c
 add_executable(cls_server ${sources})
 target_link_libraries(cls_server
     hw_grpc_proto
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF}
     ${HIREDIS_LIB}
-    ${REDIS_PLUS_PLUS_LIB}
-    ${_ABSL_LIBS}
-	${_UTF8_LIB} )
+    ${REDIS_PLUS_PLUS_LIB} )
 
 
 foreach(_target
@@ -52,12 +48,8 @@ foreach(_target
   add_executable(${_target} "${_target}.cpp")
   target_link_libraries(${_target}
   hw_grpc_proto
-  ${_GRPC_GRPCPP}
-  ${_PROTOBUF_LIBPROTOBUF}
   ${HIREDIS_LIB}
-  ${REDIS_PLUS_PLUS_LIB} 
-  ${_ABSL_LIBS}
-  ${_UTF8_LIB} )
+  ${REDIS_PLUS_PLUS_LIB} )
 endforeach()
 
 
