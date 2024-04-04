@@ -1,5 +1,6 @@
 #include <callers.h>
 #include <template.h>
+#include <logger.h>
 
 cls_bl::CreateBalance::CreateBalance(cls_gen::CounterRPC::AsyncService* _as, grpc::ServerCompletionQueue* _cq ):
         CallerBase(_as, _cq),
@@ -18,10 +19,10 @@ cls_core::Task cls_bl::CreateBalance::Proceed() {
                 key += std::to_string(request_.templateid());
                 key += ":0:0";   //FIX ME разобраться как взять актуальную версию шаблона на текущую дату или дату из запроса на создание счетчика
 
-std::cout << "cls_bl::CreateBalance::Proceed() " << key << "\n";
+                LOG_TRACE << "cls_bl::CreateBalance::Proceed() " << key ;
                 auto counter = co_await redis_ -> hgetall<std::unordered_map<std::string, std::string>>( key );
                 for (const auto &ele : counter )
-                        std::cout<<"TemplateValue: <" << ele.first << ">\t<" << ele.second << ">" << std::endl;                        
+                        LOG_TRACE <<"TemplateValue: <" << ele.first << ">\t<" << ele.second << ">" ;                        
                 
                 /*Populate counter data*/
                 counter["dateFrom"] = "some value";
@@ -60,7 +61,7 @@ std::cout << "cls_bl::CreateBalance::Proceed() " << key << "\n";
                 co_await redis_ -> command<long long>("incr", key);
                 std::string counter_id = "counter:";
                 counter_id += co_await redis_ -> command<std::string>("get", key);
-                std::cout <<"new counter have id: <" << counter_id << ">\n";
+                LOG_TRACE <<"new counter have id: <" << counter_id << ">";
 
                 auto val = co_await redis_ -> hset(counter_id, counter.begin(), counter.end() );
 

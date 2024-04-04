@@ -1,8 +1,20 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(CLS_mvp_1)
-
 set(CMAKE_CXX_STANDARD 20)
+
+
+find_package(Boost 1.74.0 REQUIRED COMPONENTS log )
+
+IF(Boost_FOUND)
+  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+  LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+ENDIF(Boost_FOUND)
+message(STATUS "Boost include dir: ${Boost_INCLUDE_DIRS} ")
+message(STATUS "Boost library dir: ${Boost_LIBRARY_DIRS} ")
+message(STATUS "Link with folowing boost libs: ${Boost_LIBRARIES} ")
+
+
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 include(CPM)
@@ -39,6 +51,7 @@ target_link_libraries(cls_server
     hw_grpc_proto
     ${HIREDIS_LIB}
     ${REDIS_PLUS_PLUS_LIB}
+    ${Boost_LIBRARIES}
 	)
 
 
