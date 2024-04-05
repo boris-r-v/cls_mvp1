@@ -4,8 +4,9 @@
 
 using namespace cls_core;
 
-std::string_view template_cache::get(int id)
+std::string_view template_cache::get(int )
 {
+    
 /*
     auto fnd = cache_.find(id);
     if (cache_.end() != fnd) 

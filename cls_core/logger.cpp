@@ -25,7 +25,32 @@ void cls_core::logger::set_severity_fatal(){
     LOG_FATAL << "Change severity log level to FATAL";
 }   
 
+void cls_core::logger::set_severity( int severity){
 
+    switch( severity ){
+        case 0: //cls_gen::SeverityEnum::trace:
+            cls_core::logger::set_severity_trace();
+            break;
+        case 1: //cls_gen::SeverityEnum::debug:
+            cls_core::logger::set_severity_debug();
+            break;
+        case 2: //cls_gen::SeverityEnum::info:
+            cls_core::logger::set_severity_info();
+            break;
+        case 3: //cls_gen::SeverityEnum::warning:
+            cls_core::logger::set_severity_warning();
+            break;
+        case 4: //cls_gen::SeverityEnum::error:
+            cls_core::logger::set_severity_error();
+            break;
+        case 5: //cls_gen::SeverityEnum::fatal:
+            cls_core::logger::set_severity_fatal();
+            break;
+        default:
+            LOG_FATAL << "Unknown severity log level code: <" << severity <<">";
+            cls_core::logger::set_severity_error();
+    }
+}
 
 /*
 #include <ctime> 

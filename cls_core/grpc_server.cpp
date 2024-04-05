@@ -12,8 +12,8 @@ ServerImpl::~ServerImpl(){
     cq_ -> Shutdown();
 }
 
-void ServerImpl::run(){
-    std::string server_address ("0.0.0.0:5678" );
+void ServerImpl::run(std::string const& server_address ){
+    //std::string server_address ("0.0.0.0:5678" );
     LOG_INFO << "CLS-server bind on: <" << server_address <<">";
 
     grpc::ServerBuilder builder;

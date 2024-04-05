@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<cls>
+    <debug>
+        <filename>debug.log</filename>
+        <level>1</level>
+    </debug>
+    <rpc_modules>
+        <module>CreateBalance</module>
+        <module>SetBalance</module>
+        <module>FindBalance</module>
+    </rpc_modules>
+    <grpc>
+        <business_endpoint>0.0.0.0:5678</business_endpoint>
+    </grpc>
+    <redis>
+        <conn1>
+            <ip>127.0.0.1</ip>
+            <port>6379</port>
+        </conn1>
+    </redis>
+</cls>
