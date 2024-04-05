@@ -26,6 +26,7 @@ void cls_core::redis_pool::add_conn(std::string const& _ip, size_t _port ){
 #else
     list_.push_back( std::make_shared<sw::redis::CoRedisCluster>(sw::redis::CoRedisCluster(conn_options, pool_options ) ) );
 #endif
+    next_ = list_.begin();
     LOG_INFO << "Redis connection: <" << _ip << ":" << _port << ">";
 }
 cls_core::redis_t cls_core::redis_pool::get( ){

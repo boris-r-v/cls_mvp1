@@ -5,7 +5,7 @@
 std::string_view tab1 ("  ");
 std::string_view tab2 ("    ");
 std::string_view tab3 ("      ");
-
+std::string_view tab4 ("        ");
 std::ostream& operator<< ( std::ostream& s, cls_gen::BusinessRequest const& r) {
 
     s << "businesRquest\n[";
@@ -13,9 +13,9 @@ std::ostream& operator<< ( std::ostream& s, cls_gen::BusinessRequest const& r) {
     s << tab1 << "context" << "\n";
     s << tab1 << "[" << "\n";
     if (r.context().has_traceid()) s << tab2 << "traceId:" << r.context().traceid() << "\n";
-    s << tab1 << "]" << "\n---";
+    s << tab1 << "]" << "\n";
     //....
-    s <<"dsa]";
+    s <<"]" << "\n";
     return s;
 }
 
