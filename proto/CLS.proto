@@ -10,7 +10,7 @@ extend google.protobuf.FieldOptions {
 package cls_gen;
 service CounterRPC {
    rpc SetBalanceInfo (BalanceInfo) returns (BalanceId) {}
-   rpc CreateBalanceCall (CreateBalance) returns (BalanceCompletionInfo) {}
+   rpc CreateBalanceCall (BusinessRequest) returns (BusinessResponse) {}
 }
 
 message BalanceId

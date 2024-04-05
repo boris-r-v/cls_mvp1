@@ -1,6 +1,7 @@
 #include <callers.h>
 #include <template.h>
 #include <logger.h>
+#include <stream_helper.h>
 
 cls_bl::CreateBalance::CreateBalance(cls_gen::CounterRPC::AsyncService* _as, grpc::ServerCompletionQueue* _cq ):
         CallerBase(_as, _cq),
@@ -11,12 +12,27 @@ cls_bl::CreateBalance::CreateBalance(cls_gen::CounterRPC::AsyncService* _as, grp
 
 cls_core::Task cls_bl::CreateBalance::Proceed() {
         if( Status::PROCESS == status_){
-                //new GetBalanceTechnicalInfo(service_, cq_, redis_ );
                 new CreateBalance(service_, cq_ );
+
+//                std::cout << request_;
+		LOG_TRACE << "Handle CeateBalance << Starting\n";
+
+                reply_.set_clientrequestid( request_.clientrequestid() );
+                reply_.set_traceid ( request_.context().traceid() );
+                reply_.set_result ( cls_gen::RequestStatus::UnknownRequestStatus );
+
+                if (false == request_.has_createbalance() ){
+			LOG_WARNING << "This is not valid CreateBalance\n";
+                        reply_.set_result ( cls_gen::RequestStatus::RequestFailed );
+                        status_ = Status::FINISH;
+                        responder_.Finish(reply_, grpc::Status::OK, this);
+                        co_return;
+                }
+		LOG_TRACE << "This is not valid CreateBalance\n";
 
                 /*Оперделяем какой шаблон использовать*/              
                 std::string key ("counterTemplate:");
-                key += std::to_string(request_.templateid());
+                key += std::to_string(request_.createbalance().templateid());
                 key += ":0:0";   //FIX ME разобраться как взять актуальную версию шаблона на текущую дату или дату из запроса на создание счетчика
 
                 LOG_TRACE << "cls_bl::CreateBalance::Proceed() " << key ;
@@ -66,7 +82,7 @@ cls_core::Task cls_bl::CreateBalance::Proceed() {
                 auto val = co_await redis_ -> hset(counter_id, counter.begin(), counter.end() );
 
 
-                reply_.mutable_complinfo()->set_id(100);
+
                 status_ = Status::FINISH;
                 responder_.Finish(reply_, grpc::Status::OK, this);                
         }

@@ -3,24 +3,35 @@
 
 #include <list>
 #include <memory>
+
+#ifndef REDIS_CLUSTER
 #include <sw/redis++/co_redis++.h>
-#include <mutex>
+#else
+#include <sw/redis++/co_redis_cluster.h>
+#endif
+
 
 namespace cls_core
 {
+
+#ifndef REDIS_CLUSTER
     typedef std::shared_ptr<sw::redis::CoRedis> redis_t;
+#else
+    typedef std::shared_ptr<sw::redis::CoRedisCluster> redis_t;
+#endif
+
     class redis_pool{
-            std::list <std::shared_ptr<sw::redis::CoRedis>> list_;  //FIX ME - have to change to lock-free, thread-save queue 
-            std::list <std::shared_ptr<sw::redis::CoRedis>>::iterator next_;
+            std::list <redis_t> list_;  //FIX ME - have to change to lock-free, thread-save queue 
+            std::list <redis_t>::iterator next_;
             std::mutex lock_;
             std::shared_ptr<sw::redis::EventLoop> event_loop_;
 
         public:
             redis_pool();
             static redis_pool& instance();
-            std::shared_ptr<sw::redis::CoRedis> get(size_t num_of_conn = 0);
-            std::shared_ptr<sw::redis::CoRedis> pop();
-            void push(std::shared_ptr<sw::redis::CoRedis>);
+            void add_conn(std::string const& ip, size_t port );
+            redis_t get( );
+
             
     };
 } // namespace cls_core

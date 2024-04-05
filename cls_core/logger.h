@@ -20,6 +20,7 @@ namespace cls_core::logger{
     void set_severity_warning();
     void set_severity_error();
     void set_severity_fatal();
+    void set_severity( int severity);
 }
 
 

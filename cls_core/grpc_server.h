@@ -19,7 +19,7 @@ namespace cls_core
         {
             public:
                 ~ServerImpl();
-                void run();
+                void run(std::string const& server_address);
                 void HandleRpcs();
                 void stop();
             private:
