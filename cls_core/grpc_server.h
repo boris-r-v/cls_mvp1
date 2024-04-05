@@ -5,6 +5,7 @@
 
 #include <grpcpp/grpcpp.h>
 #include <CLS.grpc.pb.h>
+#include <CLS_srv.grpc.pb.h>
 
 
 namespace cls_core
@@ -24,6 +25,7 @@ namespace cls_core
             private:
                 std::unique_ptr<grpc::ServerCompletionQueue> cq_;
                 cls_gen::CounterRPC::AsyncService service_;
+                cls_gen::ControlRPC::AsyncService service_control_;
                 std::unique_ptr<grpc::Server> server_;
                 bool isWorking;                
         };

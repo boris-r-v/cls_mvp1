@@ -14,7 +14,6 @@ namespace cls_bl
     class SetBalanceInfo final: public cls_core::CallerBase {
 	    public:
             SetBalanceInfo(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*);
-            SetBalanceInfo(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*, cls_core::redis_t );
             virtual cls_core::Task Proceed() override;
 
         private:
@@ -23,28 +22,15 @@ namespace cls_bl
             grpc::ServerAsyncResponseWriter<cls_gen::BalanceId> responder_;
     };    
 
-    class GetBalanceInfo final: public cls_core::CallerBase {
+    class CreateBalance final: public cls_core::CallerBase {
 	    public:
-            GetBalanceInfo(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*);
-            GetBalanceInfo(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*, cls_core::redis_t);
+            CreateBalance(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*);
             virtual cls_core::Task Proceed() override;
 
         private:
-            cls_gen::BalanceId request_;
-            cls_gen::BalanceInfo reply_;
-            grpc::ServerAsyncResponseWriter<cls_gen::BalanceInfo> responder_;
-    };    
-
-    class GetBalanceTechnicalInfo final: public cls_core::CallerBase {
-	    public:
-            GetBalanceTechnicalInfo(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*);
-            GetBalanceTechnicalInfo(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*, cls_core::redis_t );
-            virtual cls_core::Task Proceed() override;
-            
-        private:
-            cls_gen::BalanceId request_;
-            cls_gen::BalanceTechnicalInfo reply_;
-            grpc::ServerAsyncResponseWriter<cls_gen::BalanceTechnicalInfo> responder_;
+            cls_gen::CreateBalance request_;
+            cls_gen::BalanceCompletionInfo reply_;
+            grpc::ServerAsyncResponseWriter<cls_gen::BalanceCompletionInfo> responder_;
     };    
 
 } // namespace cls_cmd

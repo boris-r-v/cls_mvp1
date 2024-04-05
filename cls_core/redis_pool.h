@@ -18,7 +18,7 @@ namespace cls_core
         public:
             redis_pool();
             static redis_pool& instance();
-            std::shared_ptr<sw::redis::CoRedis> get(size_t num_of_conn);
+            std::shared_ptr<sw::redis::CoRedis> get(size_t num_of_conn = 0);
             std::shared_ptr<sw::redis::CoRedis> pop();
             void push(std::shared_ptr<sw::redis::CoRedis>);
             

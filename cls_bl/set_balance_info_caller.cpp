@@ -7,13 +7,6 @@ cls_bl::SetBalanceInfo::SetBalanceInfo(cls_gen::CounterRPC::AsyncService* _as, g
         service_->RequestSetBalanceInfo(&ctx_, &request_, &responder_, cq_, cq_,this);
 }
 
-cls_bl::SetBalanceInfo::SetBalanceInfo(cls_gen::CounterRPC::AsyncService* _as, grpc::ServerCompletionQueue* _cq, cls_core::redis_t _rd ):
-        CallerBase(_as, _cq, _rd),
-        responder_(&ctx_)
-{
-        service_->RequestSetBalanceInfo(&ctx_, &request_, &responder_, cq_, cq_,this);
-}
-
 cls_core::Task cls_bl::SetBalanceInfo::Proceed() {
         if( Status::PROCESS == status_){
 

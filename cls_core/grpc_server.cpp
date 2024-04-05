@@ -1,5 +1,7 @@
 #include <grpc_server.h>
 #include <callers.h>
+#include <cls_control_rpc.h>
+#include <logger.h>
 
 #include <thread>
 
@@ -12,11 +14,13 @@ ServerImpl::~ServerImpl(){
 
 void ServerImpl::run(){
     std::string server_address ("0.0.0.0:5678" );
-    std::cout << "Server bind on: " << server_address << std::endl;
+    LOG_INFO << "CLS-server bind on: <" << server_address <<">";
 
     grpc::ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&service_);     // Register "service_" as the instance through which we'll communicate with clients. In this case it corresponds to an *asynchronous* service.
+    builder.RegisterService(&service_control_);
+
     cq_ = builder.AddCompletionQueue();     // Get hold of the completion queue used for the asynchronous communication with the gRPC runtime.
 
     server_ = builder.BuildAndStart();       // Finally assemble the server.
@@ -25,10 +29,10 @@ void ServerImpl::run(){
 }
 
 void ServerImpl::HandleRpcs(){
-    std::cout << "HandleRpcs thread_id<"<< std::this_thread::get_id() <<"> \n";
+    LOG_TRACE << "HandleRpcs thread_id<"<< std::this_thread::get_id() <<">";
     new cls_bl::SetBalanceInfo(&service_, cq_.get() );
-    //new cls_bl::GetBalanceInfo(&service_, cq_.get() );
-    //new cls_bl::GetBalanceTechnicalInfo(&service_, cq_.get() );
+    new cls_bl::CreateBalance(&service_, cq_.get() );
+    new cls_core::SetLogSeverity(&service_control_, cq_.get() );
     void* tag; 
     bool ok;
     while (isWorking) {
