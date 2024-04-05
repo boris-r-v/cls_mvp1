@@ -14,8 +14,21 @@
     </grpc>
     <redis>
         <conn1>
-            <ip>127.0.0.1</ip>
-            <port>6379</port>
+            <ip>10.84.44.221</ip>
+            <port>7000</port>
         </conn1>
+        <conn>
+            <ip>10.84.44.221</ip>
+            <port>7000</port>
+        </conn>        
+        <conn>
+            <ip>10.84.44.223</ip>
+            <port>7005</port>
+        </conn>        
+        <conn>
+            <ip>10.84.44.225</ip>
+            <port>7010</port>
+        </conn>        
+
     </redis>
 </cls>

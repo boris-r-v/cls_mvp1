@@ -28,9 +28,9 @@ namespace cls_bl
             virtual cls_core::Task Proceed() override;
 
         private:
-            cls_gen::CreateBalance request_;
-            cls_gen::BalanceCompletionInfo reply_;
-            grpc::ServerAsyncResponseWriter<cls_gen::BalanceCompletionInfo> responder_;
+            cls_gen::BusinessRequest request_;
+            cls_gen::BusinessResponse reply_;
+            grpc::ServerAsyncResponseWriter<cls_gen::BusinessResponse> responder_;
     };    
 
 } // namespace cls_cmd

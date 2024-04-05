@@ -252,3 +252,57 @@ message ProtocolMessage
   ::cls_gen::BindAck* _internal_mutable_bindack();
 
   public:
+
+
+
+
+
+
+
+
+
+message BusinessRequest
+{
+    required int64                   clientRequestId=1;
+    required ClientContext           context=2;
+    required uint32                  handlerId=3;
+
+    oneof requestMessage
+    {
+        FindBalance                  findBalance=4;
+        GetBalance                   getBalance=5;
+        ReserveBalance               reserveBalance=6;
+        SetBalance                   setBalance=7;
+        CreateBalance                createBalance=8;
+        SetBalanceAttribute          setBalanceAttribute=9;
+        ResetBalanceAttribute        resetBalanceAttribute=10;
+        DeleteBalance                deleteBalance=11;
+        CommitReservation            commitReservation=12;
+        RollbackReservation          rollbackReservation=13;
+        RefreshBalanceTemplate       refreshBalanceTemplate=14;
+        GetBalanceTemplate           getBalanceTemplate=15;
+        GetActionData                getActionData=16;
+        ExportBalances               exportBalances=17;
+        GetBalanceTemplateList       getBalanceTemplateList=18;
+        GetReservation               getReservation=19;
+        SetNotificationCallback      setNotificationCallback=20;
+        RecalculateBalanceProfile    recalculateBalanceProfile=24;
+        BackgroundProcessTasksJob    backgroundProcessTasks=22;
+        bytes                        rawData=23;
+    }
+
+    optional uint32                  commandTimeout=25;
+}
+
+
+
+  message BusinessResponse
+{
+    required int64                  clientRequestId=2;
+    optional string                 traceId=3;
+    required RequestStatus          result = 4;
+    optional RequestDetailStatus    resultDetail = 5;
+    repeated ResultInfo             resultInfo= 6;
+    optional DebugInfo              debugInfo=7;
+    optional bytes                  rawData=8;
+}

@@ -21,10 +21,14 @@ void cls_core::redis_pool::add_conn(std::string const& _ip, size_t _port ){
     pool_options.size = 1; 
     pool_options.wait_timeout = std::chrono::milliseconds(100);
     pool_options.connection_lifetime = std::chrono::minutes(10);
-    list_.push_back( std::make_shared<sw::redis::CoRedis>(sw::redis::CoRedis(conn_options, pool_options ) ) );
+    
+    //list_.push_back( std::make_shared<sw::redis::CoRedis>(sw::redis::CoRedis(conn_options, pool_options ) ) );
+
+    list_.push_back( std::make_shared<sw::redis::CoRedisCluster>(sw::redis::CoRedisCluster(conn_options, pool_options ) ) );
+
     LOG_INFO << "Redis connection: <" << _ip << ":" << _port << ">";
 }
-std::shared_ptr<sw::redis::CoRedis> cls_core::redis_pool::get( ){
+cls_core::redis_t cls_core::redis_pool::get( ){
     
     if (list_.empty()) throw std::logic_error("Redis connection pool is empty"  );
     

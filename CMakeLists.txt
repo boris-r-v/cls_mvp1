@@ -5,7 +5,7 @@ project(CLS_mvp_1)
 #set(CMAKE_CXX_COMPILER /usr/local/gcc-13.2/bin/g++ )
 
 set(CMAKE_CXX_STANDARD 23)
-add_compile_options(-Wall -Wextra -Wpedantic -std=c++23 )
+#add_compile_options(-Wall -Wextra -Wpedantic -std=c++23 )
 
 find_package(Boost 1.84.0 REQUIRED COMPONENTS log headers )
 IF(Boost_FOUND)
@@ -43,10 +43,11 @@ include_directories (${CMAKE_BINARY_DIR}/proto)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories("cls_core")
 include_directories("cls_bl")
+include_directories("proto")
 
 
 
-file(GLOB sources "cls_core/*.h" "cls_core/*.cpp" "cls_core/*.hpp" "main.cpp" "cls_bl/*.h" "cls_bl/*.cpp")
+file(GLOB sources "proto/*.cpp" "cls_core/*.cpp" "cls_core/*.hpp" "main.cpp" "cls_bl/*.h" "cls_bl/*.cpp")
 
 # Targets cls_server
 add_executable(cls_server ${sources})
