@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package cls_gen;
+
+
+service ControlRPC {
+  rpc SetLogSeverity (SetSeverityRequest) returns (ControlResponce) {}
+}
+
+enum SeverityEnum{
+    trace=0;
+    debug=1;
+    info=2;
+    warning=3;
+    error=4;
+    fatal=5;
+}
+
+enum ResponceEnum{
+    ok=0;
+    fail=1;
+}
+
+message SetSeverityRequest {
+    SeverityEnum level = 1;
+}
+message ControlResponce {
+    ResponceEnum status = 1;
+    optional string message = 2;
+}
+

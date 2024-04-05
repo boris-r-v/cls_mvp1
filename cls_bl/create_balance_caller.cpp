@@ -66,7 +66,6 @@ cls_core::Task cls_bl::CreateBalance::Proceed() {
                 auto val = co_await redis_ -> hset(counter_id, counter.begin(), counter.end() );
 
 
-
                 reply_.mutable_complinfo()->set_id(100);
                 status_ = Status::FINISH;
                 responder_.Finish(reply_, grpc::Status::OK, this);                

@@ -34,16 +34,16 @@ header
   public:
   void clear_actionrules() ;
   ::cls_gen::BalanceActionRule* mutable_actionrules(int index);
-  ::google::protobuf::RepeatedPtrField< ::cls_gen::BalanceActionRule >*
-      mutable_actionrules();
+  ::google::protobuf::RepeatedPtrField< ::cls_gen::BalanceActionRule >*  mutable_actionrules();
   private:
   const ::google::protobuf::RepeatedPtrField<::cls_gen::BalanceActionRule>& _internal_actionrules() const;
   ::google::protobuf::RepeatedPtrField<::cls_gen::BalanceActionRule>* _internal_mutable_actionrules();
   public:
   const ::cls_gen::BalanceActionRule& actionrules(int index) const;
   ::cls_gen::BalanceActionRule* add_actionrules();
-  const ::google::protobuf::RepeatedPtrField< ::cls_gen::BalanceActionRule >&
-      actionrules() const;
+  const ::google::protobuf::RepeatedPtrField< ::cls_gen::BalanceActionRule >& actionrules() const;
+  
+  
   // repeated .cls_gen.PeriodicalRecalculationFactor recalcFactors = 6;
   int recalcfactors_size() const;
   private:

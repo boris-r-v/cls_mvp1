@@ -1,6 +1,6 @@
 #include <redis_pool.h>
 #include <iostream>
-
+#include <logger.h>
 
 cls_core::redis_pool::redis_pool()
     :next_(list_.end())
@@ -16,6 +16,7 @@ std::shared_ptr<sw::redis::CoRedis> cls_core::redis_pool::get(size_t num_of_conn
     
     if (list_.empty()){
         if (num_of_conn == 0) num_of_conn = 1;
+        LOG_TRACE << "Number of redis connection in pool: <" << num_of_conn << ">";
         for (size_t i=0; i<num_of_conn; ++i){
             sw::redis::ConnectionOptions conn_options;
             conn_options.host = "127.0.0.1";  // Required.
@@ -25,7 +26,7 @@ std::shared_ptr<sw::redis::CoRedis> cls_core::redis_pool::get(size_t num_of_conn
             pool_options.wait_timeout = std::chrono::milliseconds(100);
             pool_options.connection_lifetime = std::chrono::minutes(10);
             list_.push_back( std::make_shared<sw::redis::CoRedis>(sw::redis::CoRedis(conn_options, pool_options ) ) );
-            std::cout << "create redis connection number: " << list_.size() << "\n";
+            LOG_TRACE << "  Create redis connection number: " << list_.size();
         }
         next_ = list_.begin();
     }

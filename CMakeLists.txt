@@ -31,21 +31,22 @@ find_library(REDIS_PLUS_PLUS_LIB redis++)
 find_package(Threads REQUIRED)
 
 # Proto file
-add_library(hw_grpc_proto OBJECT proto/CLS.proto)
+add_library(hw_grpc_proto OBJECT proto/CLS.proto proto/CLS_srv.proto)
 target_include_directories(hw_grpc_proto PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(hw_grpc_proto PUBLIC gRPC::grpc++)
 protobuf_generate_cpp_grpc(TARGET hw_grpc_proto)
 
 # Include generated *.pb.h files
+include_directories (${CMAKE_BINARY_DIR}/proto)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories("cls_core")
 include_directories("cls_bl")
-include_directories (${CMAKE_BINARY_DIR}/proto)
+
 
 
 file(GLOB sources "cls_core/*.h" "cls_core/*.cpp" "cls_core/*.hpp" "main.cpp" "cls_bl/*.h" "cls_bl/*.cpp")
 
-# Targets greeter_[async_](client|server)
+# Targets cls_server
 add_executable(cls_server ${sources})
 target_link_libraries(cls_server
     hw_grpc_proto
@@ -54,11 +55,12 @@ target_link_libraries(cls_server
     ${Boost_LIBRARIES}
 	)
 
-
+# Targen some helper
 foreach(_target
     set_sync_one
     set_async
     create_balance_sync
+    set_severity_level
    )
   add_executable(${_target} "${_target}.cpp")
   target_link_libraries(${_target}
