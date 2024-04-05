@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.21)
-
 project(CLS_mvp_1)
-set(CMAKE_CXX_STANDARD 20)
 
+#set(CMAKE_C_COMPILER /usr/local/gcc-13.2/bin/gcc )
+#set(CMAKE_CXX_COMPILER /usr/local/gcc-13.2/bin/g++ )
 
-find_package(Boost 1.74.0 REQUIRED COMPONENTS log )
+set(CMAKE_CXX_STANDARD 23)
+add_compile_options(-Wall -Wextra -Wpedantic -std=c++23 )
 
+find_package(Boost 1.84.0 REQUIRED COMPONENTS log )
 IF(Boost_FOUND)
   INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
   LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
