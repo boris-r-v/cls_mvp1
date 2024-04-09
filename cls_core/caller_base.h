@@ -14,7 +14,7 @@ namespace cls_core
         public:
             CallerBase(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*);
             ~CallerBase()=default;
-            virtual Task Proceed() = 0;
+            virtual Task<void> Proceed() = 0;
 
         protected:
             
@@ -30,7 +30,7 @@ namespace cls_core
         public:
             ControlCallerBase(cls_gen::ControlRPC::AsyncService*, grpc::ServerCompletionQueue*);
             ~ControlCallerBase()=default;
-            virtual Task Proceed() = 0;
+            virtual Task<void> Proceed() = 0;
 
         protected:
             

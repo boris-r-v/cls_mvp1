@@ -10,11 +10,22 @@ cls_bl::CreateBalance::CreateBalance(cls_gen::CounterRPC::AsyncService* _as, grp
         service_->RequestCreateBalanceCall(&ctx_, &request_, &responder_, cq_, cq_,this);
 }
 
-cls_core::Task cls_bl::CreateBalance::Proceed() {
+auto cls_bl::CreateBalance::get_templte( std::string key ) -> cls_core::Task<std::unordered_map<std::string, std::string> >
+{
+
+    auto counter = co_await redis_ -> hgetall<std::unordered_map<std::string, std::string>>( key );
+    for (const auto &ele : counter )
+            LOG_TRACE <<"TemplateValue: <" << ele.first << ">\t<" << ele.second << ">" ;                        
+    co_return counter;
+    
+}
+
+cls_core::Task<void> cls_bl::CreateBalance::Proceed() {
         if( Status::PROCESS == status_){
                 new CreateBalance(service_, cq_ );
 
-		LOG_TRACE << "Handle CeateBalance << Starting";
+//		LOG_TRACE << "Handle CeateBalance << Starting";
+
                 std::cout << request_;
 
                 reply_.set_clientrequestid( request_.clientrequestid() );
@@ -31,14 +42,17 @@ cls_core::Task cls_bl::CreateBalance::Proceed() {
                 /*Оперделяем какой шаблон использовать*/              
                 std::string key ("counterTemplate:");
                 key += std::to_string(request_.createbalance().templateid());
-                key += ":1:0";   //FIX ME разобраться как взять актуальную версию шаблона на текущую дату или дату из запроса на создание счетчика
+                key += ":0:0";   //FIX ME разобраться как взять актуальную версию шаблона на текущую дату или дату из запроса на создание счетчика
 
                 LOG_TRACE << "cls_bl::CreateBalance::Proceed() " << key ;
                 try{
-                        auto counter = co_await redis_ -> hgetall<std::unordered_map<std::string, std::string>>( key );
+			auto counter = co_await get_templte(  key );
+/*                        auto counter = co_await redis_ -> hgetall<std::unordered_map<std::string, std::string>>( key );
                         for (const auto &ele : counter )
-                                LOG_TRACE <<"TemplateValue: <" << ele.first << ">\t<" << ele.second << ">" ;                        
-                        if (counter.empty() ){
+                                LOG_TRACE <<"TemplateValue: <" << ele.first << ">\t<" << ele.second << ">" ; 
+*/
+
+	                if (counter.empty() ){
                                 LOG_WARNING << "Template " << key << " not found, exiting";
                                 reply_.set_result ( cls_gen::RequestStatus::RequestFailed );
                                 status_ = Status::FINISH;

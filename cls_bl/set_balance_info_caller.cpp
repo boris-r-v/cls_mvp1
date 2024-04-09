@@ -7,7 +7,7 @@ cls_bl::SetBalanceInfo::SetBalanceInfo(cls_gen::CounterRPC::AsyncService* _as, g
         service_->RequestSetBalanceInfo(&ctx_, &request_, &responder_, cq_, cq_,this);
 }
 
-cls_core::Task cls_bl::SetBalanceInfo::Proceed() {
+cls_core::Task<void> cls_bl::SetBalanceInfo::Proceed() {
         if( Status::PROCESS == status_){
 
                 //new SetBalanceInfo(service_, cq_, redis_ );

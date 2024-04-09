@@ -8,7 +8,7 @@ cls_core::SetLogSeverity::SetLogSeverity(cls_gen::ControlRPC::AsyncService* _as,
         service_->RequestSetLogSeverity(&ctx_, &request_, &responder_, cq_, cq_,this);
 }
 
-cls_core::Task cls_core::SetLogSeverity::Proceed() {
+cls_core::Task<void> cls_core::SetLogSeverity::Proceed() {
         if( Status::PROCESS == status_){
             new SetLogSeverity(service_, cq_ );
 

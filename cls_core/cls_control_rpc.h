@@ -6,7 +6,7 @@ namespace cls_core{
     class SetLogSeverity final: public cls_core::ControlCallerBase {
         public:
             SetLogSeverity(cls_gen::ControlRPC::AsyncService*, grpc::ServerCompletionQueue*);
-            virtual cls_core::Task Proceed() override;
+            virtual cls_core::Task<void> Proceed() override;
 
         private:
             cls_gen::SetSeverityRequest request_;

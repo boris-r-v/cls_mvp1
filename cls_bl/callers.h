@@ -14,7 +14,7 @@ namespace cls_bl
     class SetBalanceInfo final: public cls_core::CallerBase {
 	    public:
             SetBalanceInfo(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*);
-            virtual cls_core::Task Proceed() override;
+            virtual cls_core::Task<void> Proceed() override;
 
         private:
             cls_gen::BalanceInfo request_;
@@ -25,12 +25,16 @@ namespace cls_bl
     class CreateBalance final: public cls_core::CallerBase {
 	    public:
             CreateBalance(cls_gen::CounterRPC::AsyncService*, grpc::ServerCompletionQueue*);
-            virtual cls_core::Task Proceed() override;
+            virtual cls_core::Task<void> Proceed() override;
 
         private:
             cls_gen::BusinessRequest request_;
             cls_gen::BusinessResponse reply_;
             grpc::ServerAsyncResponseWriter<cls_gen::BusinessResponse> responder_;
+
+
+
+	        auto get_templte( std::string key ) -> cls_core::Task<std::unordered_map<std::string, std::string> >;
     };    
 
 } // namespace cls_cmd
