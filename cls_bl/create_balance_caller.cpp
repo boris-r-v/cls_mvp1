@@ -46,7 +46,7 @@ cls_core::Task<void> cls_bl::CreateBalance::Proceed() {
 
                 LOG_TRACE << "cls_bl::CreateBalance::Proceed() " << key ;
                 try{
-			auto counter = co_await get_templte(  key );
+			auto counter = get_templte(  key );
 /*                        auto counter = co_await redis_ -> hgetall<std::unordered_map<std::string, std::string>>( key );
                         for (const auto &ele : counter )
                                 LOG_TRACE <<"TemplateValue: <" << ele.first << ">\t<" << ele.second << ">" ; 

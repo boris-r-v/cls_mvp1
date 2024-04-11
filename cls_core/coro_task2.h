@@ -6,6 +6,9 @@
 #include <exception>
 #include <optional>
 #include <iostream>
+
+
+namespace cls_core{
 /*    
     struct promise;
     struct Task: std::coroutine_handle<promise>
@@ -20,12 +23,9 @@
             void unhandled_exception() {} 
     };
 */    
-
-namespace cls_core{
-
+/*----------------PromiseBase------------------------------*/
     template <class T>
     class Task;
-
     template <class T>
     class PromiseBase{
         public:
@@ -41,18 +41,18 @@ namespace cls_core{
     template <class T>
     class Promise: public PromiseBase<T>{
         public:
-            Task<T> get_return_object(); 
-            void return_value(auto&& arg);  
+            Task<T> get_return_object();  //{return Task<T>{this};}
+            void return_value(auto&& arg);  //{PromiseBase<T>::task_->result_.emplace(std::forward<decltype(arg)>(arg));}
     };
     template <>
     class Promise<void>: public PromiseBase<void>{
         public:
-            Task<void> get_return_object(); 
-            void return_void();
+            Task<void> get_return_object(); //{ return Task<void>{this}; }
+            void return_void(); //{}
     };
 /*----------------------TaskBase---------------------------*/
     template <class T>
-    class TaskBase {
+    class TaskBase{
         public:
             using promise_type = Promise<T>;
             TaskBase(TaskBase&& other) = default;
@@ -96,7 +96,6 @@ namespace cls_core{
             using TaskBase<void>::TaskBase;
             Task(Task<void>&& other):
                 TaskBase<void>(static_cast<TaskBase<void>&& >(other)){
-                    std::cout << "TaskBase<void>\n"; 
                     promise_->task_ = this;
                     completed_ = other.completed_;
             }
@@ -110,41 +109,40 @@ namespace cls_core{
             friend class Promise<void>;
             bool completed_ = false;    
     };
-
-/*---------------------------impl---------------------*/
-    
-    template <class T>
-    void PromiseBase<T>::unhandled_exception(){ 
-        std::cout << "task" << task_ << "\n";
-        task_->exception_ = std::current_exception(); 
-        resumeWaitingCoro();
-    }
-
-    template <class T>
-    void PromiseBase<T>::resumeWaitingCoro(){
-        if (task_->handle_) task_->handle_.resume();
-    }
-
-    template <class T>
-    Task<T> Promise<T>::get_return_object(){
-        return Task<T>{this};
-    }
-
-    template <class T>
-    void Promise<T>::return_value(auto&& arg){
-        PromiseBase<T>::task_->result_.emplace(std::forward<decltype(arg)>(arg));
-        PromiseBase<T>::resumeWaitingCoro();
-    }
-
-    inline Task<void> Promise<void>::get_return_object(){ 
-        return Task<void>{this}; 
-    }
-    inline void Promise<void>::return_void(){ 
-        task_->completed_ = true; 
-        resumeWaitingCoro();
-    }
-
-
 } //cls_core
+
+
+template <class T>
+void cls_core::PromiseBase<T>::unhandled_exception(){ 
+    task_->exception_ = std::current_exception(); 
+    resumeWaitingCoro();
+}
+
+
+template <class T>
+void cls_core::PromiseBase<T>::resumeWaitingCoro(){
+    if (task_->handle_) task_->handle_.resume();
+}
+
+template <class T>
+cls_core::Task<T> cls_core::Promise<T>::get_return_object(){
+    return Task<T>{this};
+}
+
+template <class T>
+void cls_core::Promise<T>::return_value(auto&& arg){
+    PromiseBase<T>::task_->result_.emplace(std::forward<decltype(arg)>(arg));
+    PromiseBase<T>::resumeWaitingCoro();
+}
+
+inline cls_core::Task<void> cls_core::Promise<void>::get_return_object(){ 
+    return Task<void>{this}; 
+}
+inline void cls_core::Promise<void>::return_void(){ 
+    task_->completed_ = true; 
+    resumeWaitingCoro();
+}
+
+
 
 #endif // __coro_task__

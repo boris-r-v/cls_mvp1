@@ -51,20 +51,17 @@ include_directories("proto")
 file(GLOB sources "proto/*.cpp" "cls_core/*.cpp" "cls_core/*.hpp" "main.cpp" "cls_bl/*.h" "cls_bl/*.cpp")
 
 # Targets cls_server
-add_executable(cls_server ${sources})
-target_link_libraries(cls_server
-    hw_grpc_proto
-    ${HIREDIS_LIB}
-    ${REDIS_PLUS_PLUS_LIB}
-    ${Boost_LIBRARIES}
-	)
+#add_executable(cls_server ${sources})
+#target_link_libraries(cls_server
+#    hw_grpc_proto
+#    ${HIREDIS_LIB}
+#    ${REDIS_PLUS_PLUS_LIB}
+#    ${Boost_LIBRARIES}	)
 
 # Targen some helper
 foreach(_target
-    set_sync_one
-    set_async
-    create_balance_sync
-    set_severity_level
+#    set_sync_one set_async create_balance_sync   set_severity_level
+    coro_test
    )
   add_executable(${_target} "${_target}.cpp")
   target_link_libraries(${_target}
